@@ -1,5 +1,30 @@
 # Landscape Server Scalable Product Module
 
+This module requires a bootstrapped Juju cloud with a model created within it, the name of which can be provided as `model`.
+
+For example, bootstrap a LXD cloud:
+
+```sh
+juju bootstrap lxd landscape-controller
+```
+
+Then, create a model named `landscape`:
+
+```sh
+juju add-model landscape
+```
+
+Then, use `landscape` as the value for `model`.
+
+After deploying the module to the model, use the `juju status` command to monitor the lifecycle:
+
+```sh
+juju status -m landscape --relations --watch 2s
+```
+
+> [!TIP]
+> Customize the module inputs with a `terraform.tfvars` file. An example is `terraform.tfvars.example`, which can be used after removing the `.example` extension.
+
 ## API
 
 ### Inputs
