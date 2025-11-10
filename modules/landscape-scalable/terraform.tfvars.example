@@ -4,7 +4,7 @@ landscape_server = {
   app_name = "landscape-server"
   config = {
     autoregistration = true
-    landscape_ppa    = "ppa:landscape/self-hosted-beta"
+    landscape_ppa    = "ppa:landscape/self-hosted-25.10"
   }
 }
 

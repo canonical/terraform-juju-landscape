@@ -1,5 +1,4 @@
 # © 2025 Canonical Ltd.
-# See LICENSE file for licensing details.
 
 output "registration_key" {
   value = lookup(var.landscape_server.config, "registration_key", null)
@@ -23,6 +22,14 @@ output "applications" {
   }
 }
 
+locals {
+  haproxy_self_signed = (
+    lookup(var.haproxy.config, "ssl_key", null) == null ||
+    lookup(var.haproxy.config, "ssl_cert", null) == null ||
+    lookup(var.haproxy.config, "ssl_cert", null) == "SELFSIGNED"
+  )
+}
+
 output "self_signed_server" {
-  value = local.self_signed ? true : false
+  value = local.haproxy_self_signed ? true : false
 }

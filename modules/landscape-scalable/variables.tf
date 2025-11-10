@@ -1,22 +1,17 @@
 # © 2025 Canonical Ltd.
-# See LICENSE file for licensing details.
-
-# Model level variables
 
 variable "model" {
   description = "The name of the Juju model to deploy Landscape Server to"
   type        = string
 }
 
-# Charm modules
-
 variable "landscape_server" {
   type = object({
     app_name = optional(string, "landscape-server")
-    channel  = optional(string, "latest-stable/edge")
+    channel  = optional(string, "25.10/edge")
     config = optional(map(string), {
       autoregistration = true
-      landscape_ppa    = "ppa:landscape/self-hosted-beta"
+      landscape_ppa    = "ppa:landscape/self-hosted-25.10"
     })
     constraints = optional(string, "arch=amd64")
     resources   = optional(map(string), {})
