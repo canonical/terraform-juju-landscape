@@ -1,8 +1,12 @@
 # © 2025 Canonical Ltd.
 
+mock_provider "juju" {}
+
 variables {
   model            = "test-landscape"
-  landscape_server = {}
+  landscape_server = {
+    revision = 150
+  }
   postgresql       = {}
   haproxy          = {}
   rabbitmq_server  = {}
