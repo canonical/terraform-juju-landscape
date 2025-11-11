@@ -1,0 +1,66 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform-test:
+    name: Terraform Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module:
+          - modules/landscape-scalable
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.10"
+
+      - name: Terraform Init
+        working-directory: ${{ matrix.module }}
+        run: terraform init
+
+      - name: Terraform Format Check
+        working-directory: ${{ matrix.module }}
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        working-directory: ${{ matrix.module }}
+        run: terraform validate
+
+      - name: Terraform Test
+        working-directory: ${{ matrix.module }}
+        run: terraform test
+
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module:
+          - modules/landscape-scalable
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Init TFLint
+        working-directory: ${{ matrix.module }}
+        run: tflint --init
+
+      - name: Run TFLint
+        working-directory: ${{ matrix.module }}
+        run: tflint --recursive --disable-rule=terraform_module_pinned_source

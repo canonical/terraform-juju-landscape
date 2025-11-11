@@ -33,3 +33,7 @@ locals {
 output "self_signed_server" {
   value = local.haproxy_self_signed ? true : false
 }
+
+output "has_modern_amqp_interfaces" {
+  value = local.has_modern_amqp_interfaces
+}

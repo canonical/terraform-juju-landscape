@@ -1,0 +1,132 @@
+# © 2025 Canonical Ltd.
+
+variables {
+  model = "test-landscape"
+}
+
+run "test_modern_amqp_interfaces" {
+  command = plan
+
+  assert {
+    condition = (
+      local.has_modern_amqp_interfaces == true ?
+      length([for r in [
+        try(juju_integration.landscape_server_inbound_amqp[0], null),
+        try(juju_integration.landscape_server_outbound_amqp[0], null)
+      ] : r if r != null]) == 2 : true
+    )
+    error_message = "When modern AMQP interfaces are present, both inbound and outbound integrations should be created"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_amqp_interfaces == true ?
+      try(juju_integration.landscape_server_rabbitmq_server[0], null) == null : true
+    )
+    error_message = "When modern AMQP interfaces are present, legacy integration should NOT be created"
+  }
+}
+
+run "test_legacy_amqp_interface" {
+  command = plan
+
+  assert {
+    condition = (
+      local.has_modern_amqp_interfaces == false ?
+      length(juju_integration.landscape_server_rabbitmq_server) == 1 : true
+    )
+    error_message = "When legacy AMQP interface is present, legacy integration should be created"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_amqp_interfaces == false ?
+      length(juju_integration.landscape_server_inbound_amqp) == 0 &&
+      length(juju_integration.landscape_server_outbound_amqp) == 0 : true
+    )
+    error_message = "When legacy AMQP interface is present, modern integrations should NOT be created"
+  }
+}
+
+run "test_postgres_interface_switching" {
+  command = plan
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interace == true ?
+      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.landscape_server.requires.database]) > 0 : true
+    )
+    error_message = "When modern Postgres interface is available, should use 'database' endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interace == false ?
+      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.landscape_server.requires.db]) > 0 : true
+    )
+    error_message = "When legacy Postgres interface is present, should use 'db' endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interace == true ?
+      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.postgresql.provides.database]) > 0 : true
+    )
+    error_message = "When modern Postgres interface is available, should use PostgreSQL 'database' provides endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interace == false ?
+      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == "db-admin"]) > 0 : true
+    )
+    error_message = "When legacy Postgres interface is present, should use 'db-admin' endpoint"
+  }
+}
+
+run "validate_all_modules_created" {
+  command = plan
+
+  assert {
+    condition     = module.landscape_server != null
+    error_message = "Landscape server module should be created"
+  }
+
+  assert {
+    condition     = module.haproxy != null
+    error_message = "HAProxy module should be created"
+  }
+
+  assert {
+    condition     = module.postgresql != null
+    error_message = "PostgreSQL module should be created"
+  }
+
+  assert {
+    condition     = juju_application.rabbitmq_server != null
+    error_message = "RabbitMQ application should be created"
+  }
+}
+
+run "validate_all_integrations_created" {
+  command = plan
+
+  assert {
+    condition     = juju_integration.landscape_server_haproxy != null
+    error_message = "Landscape-HAProxy integration should be created"
+  }
+
+  assert {
+    condition     = juju_integration.landscape_server_postgresql != null
+    error_message = "Landscape-PostgreSQL integration should be created"
+  }
+
+  assert {
+    condition = (
+      length(juju_integration.landscape_server_rabbitmq_server) == 1 ||
+      (length(juju_integration.landscape_server_inbound_amqp) == 1 &&
+      length(juju_integration.landscape_server_outbound_amqp) == 1)
+    )
+    error_message = "At least one AMQP integration pattern should be created (legacy single or modern combo)"
+  }
+}

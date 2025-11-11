@@ -6,6 +6,14 @@ The module use the [Terraform Juju provider][Terraform Juju provider] to model t
 
 In order to deploy the Landscape Server product module, please follow the instructions in the `README.md` of the module.
 
+## Linting
+
+Use the following Make recipe to lint the modules:
+
+```sh
+make lint
+```
+
 [Terraform]: https://www.terraform.io/
 [Terraform Juju provider]: https://registry.terraform.io/providers/juju/juju/latest
 [Juju]: https://juju.is
