@@ -40,7 +40,9 @@ run "validate_channel_defaults" {
   command = plan
 
   variables {
-    landscape_server = {}
+    landscape_server = {
+      revision = 150
+    }
   }
 
   assert {

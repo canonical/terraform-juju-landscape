@@ -112,6 +112,7 @@ run "validate_outputs_with_config" {
 
   variables {
     landscape_server = {
+      revision = 150
       config = {
         registration_key = "test-key-12345"
         admin_email      = "admin@example.com"
