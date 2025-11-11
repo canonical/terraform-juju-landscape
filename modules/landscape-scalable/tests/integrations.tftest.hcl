@@ -1,7 +1,5 @@
 # © 2025 Canonical Ltd.
 
-mock_provider "juju" {}
-
 variables {
   model            = "test-landscape"
   landscape_server = {}

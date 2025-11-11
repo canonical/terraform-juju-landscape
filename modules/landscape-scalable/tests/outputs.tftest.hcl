@@ -1,8 +1,6 @@
 # © 2025 Canonical Ltd.
 # Test: Output validation
 
-mock_provider "juju" {}
-
 variables {
   model            = "test-landscape"
   landscape_server = {}
