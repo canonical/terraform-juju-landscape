@@ -1,4 +1,4 @@
-.PHONY: lint test fmt
+.PHONY: check fmt test
 
 MODULE_PATHS := modules/landscape-scalable
 
@@ -7,7 +7,7 @@ fmt:
 		cd $$m && terraform fmt -recursive; \
 	done
 
-lint:
+check:
 	for m in $(MODULE_PATHS); do \
 		cd $$m && terraform fmt -check -recursive && \
 		tflint --init && \

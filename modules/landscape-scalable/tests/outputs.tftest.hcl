@@ -3,13 +3,13 @@
 mock_provider "juju" {}
 
 variables {
-  model            = "test-landscape"
+  model = "test-landscape"
   landscape_server = {
     revision = 150
   }
-  postgresql       = {}
-  haproxy          = {}
-  rabbitmq_server  = {}
+  postgresql      = {}
+  haproxy         = {}
+  rabbitmq_server = {}
 }
 
 run "validate_output_structure" {
