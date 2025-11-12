@@ -1,7 +1,7 @@
 # © 2025 Canonical Ltd.
 
 variable "model" {
-  description = "The name of the Juju model to deploy Landscape Server to"
+  description = "The name of the Juju model to deploy Landscape Server to."
   type        = string
 }
 

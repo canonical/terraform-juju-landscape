@@ -54,7 +54,7 @@ resource "juju_application" "rabbitmq_server" {
 }
 
 locals {
-  has_modern_amqp_interfaces    = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
+  has_modern_amqp_relations    = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
   has_modern_postgres_interface = can(module.landscape_server.requires.database)
 }
 
@@ -72,7 +72,7 @@ resource "juju_integration" "landscape_server_inbound_amqp" {
 
   depends_on = [module.landscape_server, juju_application.rabbitmq_server]
 
-  count = local.has_modern_amqp_interfaces ? 1 : 0
+  count = local.has_modern_amqp_relations ? 1 : 0
 }
 
 resource "juju_integration" "landscape_server_outbound_amqp" {
@@ -89,7 +89,7 @@ resource "juju_integration" "landscape_server_outbound_amqp" {
 
   depends_on = [module.landscape_server, juju_application.rabbitmq_server]
 
-  count = local.has_modern_amqp_interfaces ? 1 : 0
+  count = local.has_modern_amqp_relations ? 1 : 0
 }
 
 # TODO: update when RMQ charm module exists
@@ -106,7 +106,7 @@ resource "juju_integration" "landscape_server_rabbitmq_server" {
 
   depends_on = [module.landscape_server, juju_application.rabbitmq_server]
 
-  count = local.has_modern_amqp_interfaces ? 0 : 1
+  count = local.has_modern_amqp_relations ? 0 : 1
 }
 
 resource "juju_integration" "landscape_server_haproxy" {

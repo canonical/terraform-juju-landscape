@@ -73,17 +73,31 @@ run "validate_self_signed_false_with_custom_cert" {
   }
 }
 
-run "validate_has_modern_amqp_interfaces_output" {
+run "validate_has_modern_amqp_relations_output" {
   command = plan
 
   assert {
-    condition     = output.has_modern_amqp_interfaces != null
-    error_message = "has_modern_amqp_interfaces output should exist"
+    condition     = output.has_modern_amqp_relations != null
+    error_message = "has_modern_amqp_relations output should exist"
   }
 
   assert {
-    condition     = output.has_modern_amqp_interfaces == local.has_modern_amqp_interfaces
-    error_message = "has_modern_amqp_interfaces output should match the local value"
+    condition     = output.has_modern_amqp_relations == local.has_modern_amqp_relations
+    error_message = "has_modern_amqp_relations output should match the local value"
+  }
+}
+
+run "validate_has_modern_postgres_interface_output" {
+  command = plan
+
+  assert {
+    condition     = output.has_modern_postgres_interface != null
+    error_message = "has_modern_postgres_interface output should exist"
+  }
+
+  assert {
+    condition     = output.has_modern_postgres_interface == local.has_modern_postgres_interface
+    error_message = "has_modern_postgres_interface output should match the local value"
   }
 }
 

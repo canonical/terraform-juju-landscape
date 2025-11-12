@@ -34,6 +34,10 @@ output "self_signed_server" {
   value = local.haproxy_self_signed ? true : false
 }
 
-output "has_modern_amqp_interfaces" {
-  value = local.has_modern_amqp_interfaces
+output "has_modern_amqp_relations" {
+  value = local.has_modern_amqp_relations
+}
+
+output "has_modern_postgres_interface" {
+  value = local.has_modern_postgres_interface
 }

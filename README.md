@@ -8,7 +8,7 @@ In order to deploy the Landscape Server product module, please follow the instru
 
 ## Linting
 
-Use the following Make recipe to lint the modules:
+Use the following Make recipe to lint the module(s):
 
 ```sh
 make fmt-fix

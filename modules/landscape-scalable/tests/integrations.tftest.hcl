@@ -12,7 +12,7 @@ variables {
   rabbitmq_server = {}
 }
 
-run "test_local_has_modern_amqp_interfaces_true" {
+run "test_local_has_modern_amqp_relations_true" {
   command = plan
 
   override_module {
@@ -29,8 +29,8 @@ run "test_local_has_modern_amqp_interfaces_true" {
   }
 
   assert {
-    condition     = local.has_modern_amqp_interfaces == true
-    error_message = "local.has_modern_amqp_interfaces should be true when both inbound_amqp and outbound_amqp exist"
+    condition     = local.has_modern_amqp_relations == true
+    error_message = "local.has_modern_amqp_relations should be true when both inbound_amqp and outbound_amqp exist"
   }
 
   assert {
@@ -39,7 +39,7 @@ run "test_local_has_modern_amqp_interfaces_true" {
   }
 }
 
-run "test_local_has_modern_amqp_interfaces_false" {
+run "test_local_has_modern_amqp_relations_false" {
   command = plan
 
   override_module {
@@ -54,8 +54,8 @@ run "test_local_has_modern_amqp_interfaces_false" {
   }
 
   assert {
-    condition     = local.has_modern_amqp_interfaces == false
-    error_message = "local.has_modern_amqp_interfaces should be false when inbound_amqp or outbound_amqp don't exist"
+    condition     = local.has_modern_amqp_relations == false
+    error_message = "local.has_modern_amqp_relations should be false when inbound_amqp or outbound_amqp don't exist"
   }
 
   assert {
@@ -120,7 +120,7 @@ run "test_modern_amqp_interfaces" {
 
   assert {
     condition = (
-      local.has_modern_amqp_interfaces == true ?
+      local.has_modern_amqp_relations == true ?
       (length(juju_integration.landscape_server_inbound_amqp) == 1 &&
       length(juju_integration.landscape_server_outbound_amqp) == 1) : true
     )
@@ -129,7 +129,7 @@ run "test_modern_amqp_interfaces" {
 
   assert {
     condition = (
-      local.has_modern_amqp_interfaces == true ?
+      local.has_modern_amqp_relations == true ?
       length(juju_integration.landscape_server_rabbitmq_server) == 0 : true
     )
     error_message = "When modern AMQP interfaces are present, legacy integration should NOT be created"
@@ -141,7 +141,7 @@ run "test_legacy_amqp_interface" {
 
   assert {
     condition = (
-      local.has_modern_amqp_interfaces == false ?
+      local.has_modern_amqp_relations == false ?
       length(juju_integration.landscape_server_rabbitmq_server) == 1 : true
     )
     error_message = "When legacy AMQP interface is present, legacy integration should be created"
@@ -149,7 +149,7 @@ run "test_legacy_amqp_interface" {
 
   assert {
     condition = (
-      local.has_modern_amqp_interfaces == false ?
+      local.has_modern_amqp_relations == false ?
       length(juju_integration.landscape_server_inbound_amqp) == 0 &&
       length(juju_integration.landscape_server_outbound_amqp) == 0 : true
     )
