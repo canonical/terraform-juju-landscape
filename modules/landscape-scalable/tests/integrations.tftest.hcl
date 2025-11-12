@@ -121,10 +121,8 @@ run "test_modern_amqp_interfaces" {
   assert {
     condition = (
       local.has_modern_amqp_interfaces == true ?
-      length([for r in [
-        try(juju_integration.landscape_server_inbound_amqp[0], null),
-        try(juju_integration.landscape_server_outbound_amqp[0], null)
-      ] : r if r != null]) == 2 : true
+      (length(juju_integration.landscape_server_inbound_amqp) == 1 &&
+       length(juju_integration.landscape_server_outbound_amqp) == 1) : true
     )
     error_message = "When modern AMQP interfaces are present, both inbound and outbound integrations should be created"
   }
@@ -132,7 +130,7 @@ run "test_modern_amqp_interfaces" {
   assert {
     condition = (
       local.has_modern_amqp_interfaces == true ?
-      try(juju_integration.landscape_server_rabbitmq_server[0], null) == null : true
+      length(juju_integration.landscape_server_rabbitmq_server) == 0 : true
     )
     error_message = "When modern AMQP interfaces are present, legacy integration should NOT be created"
   }
@@ -165,7 +163,7 @@ run "test_postgres_interface_switching" {
   assert {
     condition = (
       local.has_modern_postgres_interface == true ?
-      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.landscape_server.requires.database]) > 0 : true
+      length([for app in juju_integration.landscape_server_postgresql.application : 1 if can(app.endpoint) && app.endpoint == module.landscape_server.requires.database]) > 0 : true
     )
     error_message = "When modern Postgres interface is available, should use 'database' endpoint"
   }
@@ -173,7 +171,7 @@ run "test_postgres_interface_switching" {
   assert {
     condition = (
       local.has_modern_postgres_interface == false ?
-      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.landscape_server.requires.db]) > 0 : true
+      length([for app in juju_integration.landscape_server_postgresql.application : 1 if can(app.endpoint) && app.endpoint == module.landscape_server.requires.db]) > 0 : true
     )
     error_message = "When legacy Postgres interface is present, should use 'db' endpoint"
   }
@@ -181,7 +179,7 @@ run "test_postgres_interface_switching" {
   assert {
     condition = (
       local.has_modern_postgres_interface == true ?
-      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == module.postgresql.provides.database]) > 0 : true
+      length([for app in juju_integration.landscape_server_postgresql.application : 1 if can(app.endpoint) && app.endpoint == module.postgresql.provides.database]) > 0 : true
     )
     error_message = "When modern Postgres interface is available, should use PostgreSQL 'database' provides endpoint"
   }
@@ -189,7 +187,7 @@ run "test_postgres_interface_switching" {
   assert {
     condition = (
       local.has_modern_postgres_interface == false ?
-      length([for e in juju_integration.landscape_server_postgresql.application : e if e.endpoint == "db-admin"]) > 0 : true
+      length([for app in juju_integration.landscape_server_postgresql.application : 1 if can(app.endpoint) && app.endpoint == "db-admin"]) > 0 : true
     )
     error_message = "When legacy Postgres interface is present, should use 'db-admin' endpoint"
   }
