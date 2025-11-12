@@ -1,13 +1,13 @@
-.PHONY: check fmt test
+.PHONY: check fmt-fix fmt-check test
 
 MODULE_PATHS := modules/landscape-scalable
 
-fmt:
+fmt-fix:
 	for m in $(MODULE_PATHS); do \
 		cd $$m && terraform fmt -recursive; \
 	done
 
-check:
+fmt-check:
 	for m in $(MODULE_PATHS); do \
 		cd $$m && terraform fmt -check -recursive && \
 		tflint --init && \

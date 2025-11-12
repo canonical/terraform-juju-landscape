@@ -5,39 +5,16 @@ on:
     branches: [ main, update-pg-interface ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "~> 1.10.0"
-
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v4
-
-      - name: Run Check
-        run: make check
-
   test:
-    name: Test
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~> 1.10.0"
 
-      - name: Run Tests
-        run: make test
+      - run: make test

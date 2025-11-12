@@ -90,7 +90,6 @@ run "validate_has_modern_amqp_interfaces_output" {
 run "validate_optional_outputs" {
   command = plan
 
-  # These outputs may be null if not configured
   assert {
     condition     = can(output.registration_key) || output.registration_key == null
     error_message = "registration_key output should be accessible (nullable)"
