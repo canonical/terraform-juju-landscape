@@ -54,7 +54,7 @@ resource "juju_application" "rabbitmq_server" {
 }
 
 locals {
-  has_modern_amqp_relations    = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
+  has_modern_amqp_relations     = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
   has_modern_postgres_interface = can(module.landscape_server.requires.database)
 }
 
