@@ -9,6 +9,7 @@ module "landscape_server" {
   constraints = var.landscape_server.constraints
   revision    = var.landscape_server.revision
   base        = var.landscape_server.base
+  units       = var.landscape_server.units
 }
 
 module "haproxy" {
@@ -20,6 +21,7 @@ module "haproxy" {
   constraints = var.haproxy.constraints
   revision    = var.haproxy.revision
   base        = var.haproxy.base
+  units       = var.haproxy.units
 }
 
 module "postgresql" {
@@ -32,6 +34,7 @@ module "postgresql" {
   constraints     = var.postgresql.constraints
   revision        = var.postgresql.revision
   base            = var.postgresql.base
+  units           = var.postgresql.units
 }
 
 # TODO: Replace with internal charm module if/when it's created
