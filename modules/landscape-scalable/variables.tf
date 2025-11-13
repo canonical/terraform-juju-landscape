@@ -10,7 +10,7 @@ variable "landscape_server" {
     app_name = optional(string, "landscape-server")
     channel  = optional(string, "25.10/edge")
     config = optional(map(string), {
-      autoregistration = true
+      autoregistration = "true"
       landscape_ppa    = "ppa:landscape/self-hosted-25.10"
     })
     constraints = optional(string, "arch=amd64")

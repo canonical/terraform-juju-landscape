@@ -153,7 +153,7 @@ run "test_legacy_amqp_interface" {
       length(juju_integration.landscape_server_inbound_amqp) == 0 &&
       length(juju_integration.landscape_server_outbound_amqp) == 0 : true
     )
-    error_message = "When has_modern_amqp_relations is false, modern AMQP relations not be created"
+    error_message = "When has_modern_amqp_relations is false, modern AMQP relations should not be created"
   }
 }
 
