@@ -7,6 +7,9 @@ variables {
   landscape_server = {
     revision = 150
   }
+  haproxy         = {}
+  postgresql      = {}
+  rabbitmq_server = {}
 }
 
 run "test_local_has_modern_amqp_relations_true" {

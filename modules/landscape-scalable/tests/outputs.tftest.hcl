@@ -7,6 +7,9 @@ variables {
   landscape_server = {
     revision = 150
   }
+  haproxy         = {}
+  postgresql      = {}
+  rabbitmq_server = {}
 }
 
 run "validate_output_structure" {

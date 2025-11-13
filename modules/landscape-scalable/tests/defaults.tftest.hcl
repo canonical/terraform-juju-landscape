@@ -3,7 +3,11 @@
 mock_provider "juju" {}
 
 variables {
-  model = "test-landscape"
+  model            = "test-landscape"
+  landscape_server = {}
+  haproxy          = {}
+  postgresql       = {}
+  rabbitmq_server  = {}
 }
 
 run "validate_channel_defaults" {

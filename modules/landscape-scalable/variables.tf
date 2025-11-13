@@ -61,7 +61,7 @@ variable "haproxy" {
     base        = optional(string, "ubuntu@22.04")
     units       = optional(number, 1)
   })
-  
+
   default = {}
 }
 
