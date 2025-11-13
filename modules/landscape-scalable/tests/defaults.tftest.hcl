@@ -15,7 +15,7 @@ run "validate_channel_defaults" {
 
   assert {
     condition     = var.landscape_server.channel == "25.10/edge"
-    error_message = "Landscape server channel should default to '25.10/edge'"
+    error_message = "Landscape Server channel should default to '25.10/edge'"
   }
 
   assert {
@@ -39,7 +39,7 @@ run "validate_rev_defaults" {
 
   assert {
     condition     = var.landscape_server.revision == null
-    error_message = "Landscape server revision should default to null"
+    error_message = "Landscape Server revision should default to null"
   }
 
   assert {
@@ -63,7 +63,7 @@ run "validate_base_defaults" {
 
   assert {
     condition     = var.landscape_server.base == "ubuntu@22.04"
-    error_message = "Landscape server base should default to 'ubuntu@22.04'"
+    error_message = "Landscape Server base should default to 'ubuntu@22.04'"
   }
 
   assert {
@@ -87,7 +87,7 @@ run "validate_config_defaults" {
 
   assert {
     condition     = lookup(var.landscape_server.config, "autoregistration", null) == "true"
-    error_message = "Landscape server should have autoregistration enabled by default"
+    error_message = "Landscape Server should have autoregistration enabled by default"
   }
 
   assert {
@@ -111,7 +111,7 @@ run "validate_constraints_defaults" {
 
   assert {
     condition     = var.landscape_server.constraints == "arch=amd64"
-    error_message = "Landscape server constraints should default to 'arch=amd64'"
+    error_message = "Landscape Server constraints should default to 'arch=amd64'"
   }
 
   assert {
