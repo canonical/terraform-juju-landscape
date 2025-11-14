@@ -13,7 +13,7 @@ module "landscape_server" {
 }
 
 module "haproxy" {
-  source      = "git::https://github.com/canonical/haproxy-operator.git//terraform/charm"
+  source      = "git::https://github.com/canonical/haproxy-operator.git//terraform/charm?ref=rev250"
   model       = var.model
   config      = var.haproxy.config
   app_name    = var.haproxy.app_name
@@ -25,8 +25,8 @@ module "haproxy" {
 }
 
 module "postgresql" {
-  source = "git::https://github.com/canonical/postgresql-operator.git//terraform"
-  # NOTE: they should comply here, may need to update later if they conform to the inputs
+  # NOTE: We pin to 16/edge because contains hardcoded storage directives that break with PG 16
+  source          = "git::https://github.com/canonical/postgresql-operator.git//terraform?ref=16/edge"
   juju_model_name = var.model
   config          = var.postgresql.config
   app_name        = var.postgresql.app_name
@@ -120,6 +120,8 @@ resource "juju_integration" "landscape_server_haproxy" {
     name = module.haproxy.app_name
   }
 
+  depends_on = [module.landscape_server, juju_application.rabbitmq_server]
+
 }
 
 resource "juju_integration" "landscape_server_postgresql" {
@@ -134,5 +136,7 @@ resource "juju_integration" "landscape_server_postgresql" {
     name     = module.postgresql.application_name
     endpoint = local.has_modern_postgres_interface ? module.postgresql.provides.database : "db-admin"
   }
+
+  depends_on = [module.landscape_server, module.postgresql]
 
 }

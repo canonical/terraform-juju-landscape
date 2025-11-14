@@ -7,7 +7,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -15,4 +15,4 @@ jobs:
           terraform_version: "~> 1.10.0"
 
       - uses: terraform-linters/setup-tflint@v4
-      - run: make fmt-check
+      - run: make check

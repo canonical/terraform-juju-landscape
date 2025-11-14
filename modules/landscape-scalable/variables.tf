@@ -6,6 +6,7 @@ variable "model" {
 }
 
 variable "landscape_server" {
+  description = "Configuration for the Landscape Server charm."
   type = object({
     app_name = optional(string, "landscape-server")
     channel  = optional(string, "25.10/edge")
@@ -24,6 +25,7 @@ variable "landscape_server" {
 }
 
 variable "postgresql" {
+  description = "Configuration for the PostgreSQL charm."
   type = object({
     app_name = optional(string, "postgresql")
     channel  = optional(string, "14/stable")
@@ -46,6 +48,7 @@ variable "postgresql" {
 }
 
 variable "haproxy" {
+  description = "Configuration for the HAProxy charm."
   type = object({
     app_name = optional(string, "haproxy")
     channel  = optional(string, "latest/edge")
@@ -66,6 +69,7 @@ variable "haproxy" {
 }
 
 variable "rabbitmq_server" {
+  description = "Configuration for the RabbitMQ charm."
   type = object({
     app_name = optional(string, "rabbitmq-server")
     channel  = optional(string, "latest/edge")

@@ -20,6 +20,87 @@ Then, use `landscape` as the value for `model`:
 terraform apply -var model=landscape
 ```
 
+Example output:
+
+```hcl
+applications = {
+  "haproxy" = {
+    "app_name" = "haproxy"
+    "provides" = {
+      "cos_agent" = "cos-agent"
+      "haproxy_route" = "haproxy_route"
+      "ingress" = "ingress"
+    }
+    "requires" = {
+      "certificates" = "certificates"
+      "reverseproxy" = "reverseproxy"
+    }
+  }
+  "landscape_server" = {
+    "app_name" = "landscape-server"
+    "provides" = {
+      "cos_agent" = "cos-agent"
+      "data" = "data"
+      "hosted" = "hosted"
+      "nrpe_external_master" = "nrpe-external-master"
+      "website" = "website"
+    }
+    "requires" = {
+      "application_dashboard" = "application-dashboard"
+      "database" = "database"
+      "db" = "db"
+      "inbound_amqp" = "inbound-amqp"
+      "outbound_amqp" = "outbound-amqp"
+    }
+  }
+  "postgresql" = {
+    "application_name" = "postgresql"
+    "provides" = {
+      "cos_agent" = "cos-agent"
+      "database" = "database"
+    }
+    "requires" = {
+      "certificates" = "certificates"
+      "s3_parameters" = "s3-parameters"
+    }
+  }
+  "rabbitmq_server" = {
+    "charm" = tolist([
+      {
+        "base" = "ubuntu@24.04"
+        "channel" = "latest/edge"
+        "name" = "rabbitmq-server"
+        "revision" = 250
+        "series" = "noble"
+      },
+    ])
+    "config" = tomap({
+      "consumer-timeout" = "259200000"
+    })
+    "constraints" = "arch=amd64"
+    "endpoint_bindings" = toset(null) /* of object */
+    "expose" = tolist([])
+    "id" = "landscape:rabbitmq-server"
+    "machines" = toset([
+      "2",
+    ])
+    "model" = "landscape"
+    "model_type" = "iaas"
+    "name" = "rabbitmq-server"
+    "placement" = "2"
+    "principal" = tobool(null)
+    "resources" = tomap(null) /* of string */
+    "storage" = toset(null) /* of object */
+    "storage_directives" = tomap(null) /* of string */
+    "trust" = false
+    "units" = 1
+  }
+}
+haproxy_self_signed = true
+has_modern_amqp_relations = true
+has_modern_postgres_interface = true
+```
+
 After deploying the module to the model, use the `juju status` command to monitor the lifecycle:
 
 ```sh
@@ -28,6 +109,13 @@ juju status -m landscape --relations --watch 2s
 
 > [!TIP]
 > Customize the module inputs with a `terraform.tfvars` file. An example is `terraform.tfvars.example`, which can be used after removing the `.example` extension.
+
+## Requirements
+
+| Name          | Version |
+| ------------- | ------- |
+| terraform     | >= 1.10 |
+| juju provider | < 1.0.0 |
 
 <!-- TODO: Just link to public Landscape docs rather than duplicate here. -->
 

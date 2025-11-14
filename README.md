@@ -8,10 +8,16 @@ In order to deploy a Landscape product module, please follow the instructions in
 
 ## Linting
 
-Use the following Make recipe to lint the module(s):
+Use the following Make recipe to lint and automatically format the module(s):
 
 ```sh
-make fmt-fix
+make fix
+```
+
+To verify formatting and linting without writing any changes:
+
+```sh
+make check
 ```
 
 ## Testing
