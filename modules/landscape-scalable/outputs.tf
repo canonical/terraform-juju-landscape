@@ -30,7 +30,7 @@ locals {
   )
 }
 
-output "self_signed_server" {
+output "haproxy_self_signed" {
   value = local.haproxy_self_signed
 }
 

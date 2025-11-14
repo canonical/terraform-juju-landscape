@@ -145,7 +145,7 @@ Upon being applied, the module exports the following outputs:
 | `has_modern_amqp_relations`     | The deployment used the `inbound-amqp` and `outbound-amqp` endpoints to integrate the Landscape Server and RabbitMQ server charms rather than the legacy `amqp` endpoint. | False     |
 | `has_modern_postgres_interface` | The deployment supports the `postgresql_client` charm interface and used the `database` endpoint when integrating Landscape Server and PostgreSQL.                        | False     |
 | `registration_key`              | Registration key for Landscape Server clients                                                                                                                             | True      |
-| `self_signed_server`            | This deployment is not using custom TLS.                                                                                                                                  | False     |
+| `haproxy_self_signed`           | HAProxy is not using custom TLS.                                                                                                                                          | False     |
 
 ## Notes
 

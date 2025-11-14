@@ -45,13 +45,13 @@ run "validate_self_signed_output" {
   command = plan
 
   assert {
-    condition     = output.self_signed_server != null
-    error_message = "self_signed_server output should exist"
+    condition     = output.haproxy_self_signed != null
+    error_message = "haproxy_self_signed output should exist"
   }
 
   assert {
-    condition     = output.self_signed_server == true
-    error_message = "With default SELFSIGNED ssl_cert, self_signed_server should be true"
+    condition     = output.haproxy_self_signed == true
+    error_message = "With default SELFSIGNED ssl_cert, haproxy_self_signed should be true"
   }
 }
 
@@ -68,8 +68,8 @@ run "validate_self_signed_false_with_custom_cert" {
   }
 
   assert {
-    condition     = output.self_signed_server == false
-    error_message = "With custom SSL cert/key, self_signed_server should be false"
+    condition     = output.haproxy_self_signed == false
+    error_message = "With custom SSL cert/key, haproxy_self_signed should be false"
   }
 }
 
