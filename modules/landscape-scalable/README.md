@@ -29,9 +29,9 @@ juju status -m landscape --relations --watch 2s
 > [!TIP]
 > Customize the module inputs with a `terraform.tfvars` file. An example is `terraform.tfvars.example`, which can be used after removing the `.example` extension.
 
-## API
+<!-- TODO: Just link to public Landscape docs rather than duplicate here. -->
 
-### Inputs
+## Inputs
 
 The Landscape Scalable product module offers the following configurable inputs:
 
@@ -43,9 +43,9 @@ The Landscape Scalable product module offers the following configurable inputs:
 | `postgresql`       | object | Configuration for the PostgreSQL machine charm including app_name, channel, config, constraints, resources, revision, base, and units | False    | `{}`    |
 | `rabbitmq_server`  | object | Configuration for the RabbitMQ Server charm including app_name, channel, config, constraints, resources, revision, base, and units    | False    | `{}`    |
 
-#### Nested object schemas
+### Nested object schemas
 
-##### `landscape_server`
+#### `landscape_server`
 
 | Name          | Type        | Description                                    | Required | Default            |
 | ------------- | ----------- | ---------------------------------------------- | -------- | ------------------ |
@@ -64,7 +64,7 @@ Default `config`:
 { autoregistration = "true", landscape_ppa = "ppa:landscape/self-hosted-25.10" }
 ```
 
-##### `postgresql`
+#### `postgresql`
 
 | Name          | Type        | Description                                    | Required | Default         |
 | ------------- | ----------- | ---------------------------------------------- | -------- | --------------- |
@@ -90,7 +90,7 @@ Default `config`:
 }
 ```
 
-##### `haproxy`
+#### `haproxy`
 
 | Name          | Type        | Description                                    | Required | Default         |
 | ------------- | ----------- | ---------------------------------------------- | -------- | --------------- |
@@ -114,7 +114,7 @@ Default `config`:
 }
 ```
 
-##### `rabbitmq_server`
+#### `rabbitmq_server`
 
 | Name          | Type        | Description                                    | Required | Default           |
 | ------------- | ----------- | ---------------------------------------------- | -------- | ----------------- |
@@ -133,7 +133,7 @@ Default `config`:
 { consumer-timeout = "259200000" }
 ```
 
-### Outputs
+## Outputs
 
 Upon being applied, the module exports the following outputs:
 
@@ -145,7 +145,7 @@ Upon being applied, the module exports the following outputs:
 | `has_modern_amqp_relations`     | The deployment used the `inbound-amqp` and `outbound-amqp` endpoints to integrate the Landscape Server and RabbitMQ server charms rather than the legacy `amqp` endpoint. | False     |
 | `has_modern_postgres_interface` | The deployment supports the `postgresql_client` charm interface and used the `database` endpoint when integrating Landscape Server and PostgreSQL.                        | False     |
 | `registration_key`              | Registration key for Landscape Server clients                                                                                                                             | True      |
-| `haproxy_self_signed`           | HAProxy is not using custom TLS.                                                                                                                                          | False     |
+| `haproxy_self_signed`           | HAProxy is using a self-signed certificate.                                                                                                                               | False     |
 
 ## Notes
 
