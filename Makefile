@@ -7,14 +7,14 @@ TFLINT := tflint --config=$(ROOT_DIR)/.tflint.hcl
 fix:
 	$(TFLINT) --init
 	for m in $(MODULE_PATHS); do \
-		cd $$m && terraform fmt -recursive && \
+		cd $$m && terraform init -backend=false && terraform fmt -recursive && \
 		$(TFLINT) --recursive --fix; \
 	done
 
 fmt-check:
 	$(TFLINT) --init
 	for m in $(MODULE_PATHS); do \
-		cd $$m && terraform fmt -check -recursive && \
+		cd $$m && terraform init -backend=false && terraform fmt -check -recursive && \
 		$(TFLINT) --recursive; \
 	done
 
