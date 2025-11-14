@@ -11,7 +11,7 @@ output "admin_email" {
 }
 
 output "admin_password" {
-  description = "Administrator password from the Landscape Server config."
+  description = "Administrator password from the Landscape Server config (sensitive)."
   value       = lookup(var.landscape_server.config, "admin_password", null)
   sensitive   = true
 }

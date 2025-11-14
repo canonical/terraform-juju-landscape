@@ -1,26 +1,28 @@
-.PHONY: check fix fmt-check test
-
 MODULE_PATHS := modules/landscape-scalable
-ROOT_DIR := $(shell pwd)
-TFLINT := tflint --config=$(ROOT_DIR)/.tflint.hcl
+
+.PHONY: check fix test
+
+check:
+	tflint --init
+	for m in $(MODULE_PATHS); do \
+		cd $$m && \
+		terraform init -backend=false && \
+		terraform fmt -check -recursive && \
+		tflint --recursive; \
+	done
 
 fix:
-	$(TFLINT) --init
+	tflint --init
 	for m in $(MODULE_PATHS); do \
-		cd $$m && terraform init -backend=false && terraform fmt -recursive && \
-		$(TFLINT) --recursive --fix; \
+		cd $$m && \
+		terraform init -backend=false && \
+		terraform fmt -recursive && \
+		tflint --recursive --fix; \
 	done
-
-fmt-check:
-	$(TFLINT) --init
-	for m in $(MODULE_PATHS); do \
-		cd $$m && terraform init -backend=false && terraform fmt -check -recursive && \
-		$(TFLINT) --recursive; \
-	done
-
-check: fmt-check
 
 test:
 	for m in $(MODULE_PATHS); do \
-		cd $$m && terraform init && terraform test; \
+		cd $$m && \
+		terraform init -backend=false && \
+		terraform test; \
 	done
