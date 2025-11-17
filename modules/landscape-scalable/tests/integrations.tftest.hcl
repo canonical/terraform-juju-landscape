@@ -160,3 +160,47 @@ run "validate_all_integrations_created" {
     error_message = "At least one AMQP integration pattern should be created (legacy single or modern combo)"
   }
 }
+
+run "validate_no_pg16_stable_allowed" {
+  command = plan
+  variables {
+    postgresql = {
+      channel = "16/stable"
+    }
+  }
+
+  expect_failures = [var.postgresql]
+}
+
+run "validate_no_pg16_edge_allowed" {
+  command = plan
+  variables {
+    postgresql = {
+      channel = "16/edge"
+    }
+  }
+
+  expect_failures = [var.postgresql]
+}
+
+run "validate_no_pg16_beta_allowed" {
+  command = plan
+  variables {
+    postgresql = {
+      channel = "16/beta"
+    }
+  }
+
+  expect_failures = [var.postgresql]
+}
+
+run "validate_no_pg16_candidate_allowed" {
+  command = plan
+  variables {
+    postgresql = {
+      channel = "16/candidate"
+    }
+  }
+
+  expect_failures = [var.postgresql]
+}
