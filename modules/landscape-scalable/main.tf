@@ -25,8 +25,7 @@ module "haproxy" {
 }
 
 module "postgresql" {
-  # NOTE: We pin to 16/edge because contains hardcoded storage directives that break with PG 16
-  source          = "git::https://github.com/canonical/postgresql-operator.git//terraform?ref=16/edge"
+  source          = "git::https://github.com/canonical/postgresql-operator.git//terraform?ref=rev935"
   juju_model_name = var.model
   config          = var.postgresql.config
   app_name        = var.postgresql.app_name
@@ -54,8 +53,7 @@ resource "juju_application" "rabbitmq_server" {
 }
 
 locals {
-  has_modern_amqp_relations     = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
-  has_modern_postgres_interface = can(module.landscape_server.requires.database)
+  has_modern_amqp_relations = can(module.landscape_server.requires.inbound_amqp) && can(module.landscape_server.requires.outbound_amqp)
 }
 
 resource "juju_integration" "landscape_server_inbound_amqp" {
@@ -124,17 +122,19 @@ resource "juju_integration" "landscape_server_haproxy" {
 
 }
 
+# TODO: Handle both interfaces when the Landscape Charm can integrate with the modern
+# PostgreSQL interface (postgresql_client). See the `modern-pg-interface` branch.
 resource "juju_integration" "landscape_server_postgresql" {
   model = var.model
 
   application {
     name     = module.landscape_server.app_name
-    endpoint = local.has_modern_postgres_interface ? module.landscape_server.requires.database : module.landscape_server.requires.db
+    endpoint = "db"
   }
 
   application {
     name     = module.postgresql.application_name
-    endpoint = local.has_modern_postgres_interface ? module.postgresql.provides.database : "db-admin"
+    endpoint = "db-admin"
   }
 
   depends_on = [module.landscape_server, module.postgresql]

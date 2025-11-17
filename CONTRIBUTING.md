@@ -49,7 +49,6 @@ Install `tflint`:
 
 ```sh
 sudo snap install tflint
-
 ```
 
 Use the Make recipes:

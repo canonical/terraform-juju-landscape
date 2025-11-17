@@ -1,5 +1,8 @@
 # Landscape Scalable Product Module
 
+> [!CAUTION]
+> This module is not currently compatible with Charmed PostgreSQL 16. You cannot use the `16/stable`, `16/candidate`, `16/edge`, or `16/beta` channels of the `postgresql` charm.
+
 This module requires a bootstrapped Juju cloud with a model created within it, the name of which can be provided as `model`.
 
 For example, bootstrap a LXD cloud:

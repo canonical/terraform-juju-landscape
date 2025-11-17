@@ -64,56 +64,6 @@ run "test_local_has_modern_amqp_relations_false" {
   }
 }
 
-run "test_local_has_modern_postgres_interface_true" {
-  command = plan
-
-  override_module {
-    target = module.landscape_server
-    outputs = {
-      app_name = "landscape-server"
-      requires = {
-        inbound_amqp  = "inbound-amqp"
-        outbound_amqp = "outbound-amqp"
-        database      = "database"
-        db            = "db"
-      }
-    }
-  }
-
-  assert {
-    condition     = local.has_modern_postgres_interface == true
-    error_message = "has_modern_postgres_interface should be true when 'database' key exists in requires"
-  }
-
-  assert {
-    condition     = can(module.landscape_server.requires.database)
-    error_message = "database should be accessible"
-  }
-}
-
-run "test_local_has_modern_postgres_interface_false" {
-  command = plan
-
-  override_module {
-    target = module.landscape_server
-    outputs = {
-      app_name = "landscape-server"
-      requires = {
-        db = "db"
-      }
-    }
-  }
-
-  assert {
-    condition     = local.has_modern_postgres_interface == false
-    error_message = "local.has_modern_postgres_interface should be false when 'database' key doesn't exist in requires"
-  }
-
-  assert {
-    condition     = !can(module.landscape_server.requires.database)
-    error_message = "database shouldn't be accessible"
-  }
-}
 
 run "test_modern_amqp_interfaces" {
   command = plan
@@ -161,41 +111,6 @@ run "test_legacy_amqp_interface" {
   }
 }
 
-run "test_postgres_interface_switching" {
-  command = plan
-
-  assert {
-    condition = (
-      local.has_modern_postgres_interface == true ?
-      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.postgresql.provides.database || app.endpoint == module.landscape_server.requires.database]) : true
-    )
-    error_message = "When modern Postgres interface is available, should use 'database' endpoint"
-  }
-
-  assert {
-    condition = (
-      local.has_modern_postgres_interface == false ?
-      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.landscape_server.requires.db]) : true
-    )
-    error_message = "When legacy Postgres interface is present, Landscape should use 'db' endpoint"
-  }
-
-  assert {
-    condition = (
-      local.has_modern_postgres_interface == true ?
-      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.postgresql.provides.database || app.endpoint == module.landscape_server.requires.database]) : true
-    )
-    error_message = "When modern Postgres interface is available, both Postgres and Landscape should use the 'database' endpoint"
-  }
-
-  assert {
-    condition = (
-      local.has_modern_postgres_interface == false ?
-      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == "db-admin"]) : true
-    )
-    error_message = "When legacy Postgres interface is present, Postgres should use the 'db-admin' endpoint"
-  }
-}
 
 run "validate_all_modules_created" {
   command = plan

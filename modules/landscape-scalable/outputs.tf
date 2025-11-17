@@ -43,8 +43,3 @@ output "has_modern_amqp_relations" {
   description = "Indicates whether the deployment uses the modern inbound/outbound AMQP endpoints."
   value       = local.has_modern_amqp_relations
 }
-
-output "has_modern_postgres_interface" {
-  description = "Indicates whether the deployment uses the modern database interface for PostgreSQL."
-  value       = local.has_modern_postgres_interface
-}

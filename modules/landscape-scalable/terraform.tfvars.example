@@ -10,8 +10,3 @@ landscape_server = {
     landscape_ppa    = "ppa:landscape/self-hosted-25.10"
   }
 }
-
-postgresql = {
-  base    = "ubuntu@24.04"
-  channel = "16/stable"
-}

@@ -24,6 +24,10 @@ variable "landscape_server" {
   default = {}
 }
 
+locals {
+  unsupported_postgresql_channels = ["16/stable", "16/candidate", "16/edge", "16/beta"]
+}
+
 variable "postgresql" {
   description = "Configuration for the PostgreSQL charm."
   type = object({
@@ -45,6 +49,13 @@ variable "postgresql" {
   })
 
   default = {}
+
+  validation {
+    condition = !contains(local.unsupported_postgresql_channels, var.postgresql.channel)
+    error_message = <<-EOT
+      This module is not currently compatible with Charmed PostgreSQL 16. You cannot use the `16/stable`, `16/candidate`, `16/edge`, or `16/beta` channels of the `postgresql` charm.
+    EOT
+  }
 }
 
 variable "haproxy" {
