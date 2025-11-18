@@ -14,5 +14,5 @@ jobs:
         with:
           terraform_version: "~> 1.10.0"
 
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v6
       - run: make check
