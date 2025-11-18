@@ -1,15 +1,14 @@
-# Landscape Server Terraform Product Module
+# Landscape Terraform Product Modules
 
-> [!CAUTION]
-> This module is currently **experimental** and should not be used in production.
+> [!WARNING]
+> This repository is currently a **work-in-progress** and should not be used in production.
 
-This project contains the [Terraform][Terraform] product module to deploy the [Landscape Server bundle][Landscape Server bundle].
+This project contains [Terraform][Terraform] product modules to deploy Landscape, including the Landscape Server charm and other required applications.
 
-The module use the [Terraform Juju provider][Terraform Juju provider] to model the bundle deployment onto any machine environment managed by [Juju][Juju].
+The modules use the [Terraform provider for Juju][Terraform Juju provider] to model the deployment onto any machine environment managed by [Juju][Juju].
 
-In order to deploy the Landscape Server product module, please follow the instructions in the `README.md` of the module.
+In order to deploy the product modules, please follow the instructions in the `README.md` of the module.
 
 [Terraform]: https://www.terraform.io/
 [Terraform Juju provider]: https://registry.terraform.io/providers/juju/juju/latest
 [Juju]: https://juju.is
-[Landscape Server bundle]: https://github.com/canonical/landscape-charm/blob/main/bundle-examples/bundle.yaml
