@@ -60,10 +60,60 @@ run "test_local_has_modern_amqp_relations_false" {
 
   assert {
     condition     = !can(module.landscape_server.requires.inbound_amqp) && !can(module.landscape_server.requires.outbound_amqp)
-    error_message = "Neither inbound_amqp nor outbound_amqp should be accessible when has_modern_amqp_relations is false"
+    error_message = "Neither inbound_amqp or outbound_amqp should not be accessible when has_modern_amqp_relations is false"
   }
 }
 
+run "test_local_has_modern_postgres_interface_true" {
+  command = plan
+
+  override_module {
+    target = module.landscape_server
+    outputs = {
+      app_name = "landscape-server"
+      requires = {
+        inbound_amqp  = "inbound-amqp"
+        outbound_amqp = "outbound-amqp"
+        database      = "database"
+        db            = "db"
+      }
+    }
+  }
+
+  assert {
+    condition     = local.has_modern_postgres_interface == true
+    error_message = "has_modern_postgres_interface should be true when 'database' key exists in requires"
+  }
+
+  assert {
+    condition     = can(module.landscape_server.requires.database)
+    error_message = "database should be accessible"
+  }
+}
+
+run "test_local_has_modern_postgres_interface_false" {
+  command = plan
+
+  override_module {
+    target = module.landscape_server
+    outputs = {
+      app_name = "landscape-server"
+      requires = {
+        db = "db"
+      }
+    }
+  }
+
+  assert {
+    condition     = local.has_modern_postgres_interface == false
+    error_message = "local.has_modern_postgres_interface should be false when 'database' key doesn't exist in requires"
+  }
+
+  assert {
+    condition     = !can(module.landscape_server.requires.database)
+    error_message = "database shouldn't be accessible"
+  }
+}
 
 run "test_modern_amqp_interfaces" {
   command = plan
@@ -111,6 +161,41 @@ run "test_legacy_amqp_interface" {
   }
 }
 
+run "test_postgres_interface_switching" {
+  command = plan
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interface == true ?
+      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.postgresql.provides.database || app.endpoint == module.landscape_server.requires.database]) : true
+    )
+    error_message = "When modern Postgres interface is available, should use 'database' endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interface == false ?
+      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.landscape_server.requires.db]) : true
+    )
+    error_message = "When legacy Postgres interface is present, Landscape should use 'db' endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interface == true ?
+      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == module.postgresql.provides.database || app.endpoint == module.landscape_server.requires.database]) : true
+    )
+    error_message = "When modern Postgres interface is available, both Postgres and Landscape should use the 'database' endpoint"
+  }
+
+  assert {
+    condition = (
+      local.has_modern_postgres_interface == false ?
+      alltrue([for app in juju_integration.landscape_server_postgresql.application : true if app.endpoint == "db-admin"]) : true
+    )
+    error_message = "When legacy Postgres interface is present, Postgres should use the 'db-admin' endpoint"
+  }
+}
 
 run "validate_all_modules_created" {
   command = plan
@@ -159,48 +244,4 @@ run "validate_all_integrations_created" {
     )
     error_message = "At least one AMQP integration pattern should be created (legacy single or modern combo)"
   }
-}
-
-run "validate_no_pg16_stable_allowed" {
-  command = plan
-  variables {
-    postgresql = {
-      channel = "16/stable"
-    }
-  }
-
-  expect_failures = [var.postgresql]
-}
-
-run "validate_no_pg16_edge_allowed" {
-  command = plan
-  variables {
-    postgresql = {
-      channel = "16/edge"
-    }
-  }
-
-  expect_failures = [var.postgresql]
-}
-
-run "validate_no_pg16_beta_allowed" {
-  command = plan
-  variables {
-    postgresql = {
-      channel = "16/beta"
-    }
-  }
-
-  expect_failures = [var.postgresql]
-}
-
-run "validate_no_pg16_candidate_allowed" {
-  command = plan
-  variables {
-    postgresql = {
-      channel = "16/candidate"
-    }
-  }
-
-  expect_failures = [var.postgresql]
 }

@@ -87,6 +87,19 @@ run "validate_has_modern_amqp_relations_output" {
   }
 }
 
+run "validate_has_modern_postgres_interface_output" {
+  command = plan
+
+  assert {
+    condition     = output.has_modern_postgres_interface != null
+    error_message = "has_modern_postgres_interface output should exist"
+  }
+
+  assert {
+    condition     = output.has_modern_postgres_interface == local.has_modern_postgres_interface
+    error_message = "has_modern_postgres_interface output should match the local value"
+  }
+}
 
 run "validate_optional_outputs" {
   command = plan
