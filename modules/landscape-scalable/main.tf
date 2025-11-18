@@ -25,7 +25,6 @@ module "haproxy" {
 }
 
 module "postgresql" {
-  # NOTE: We pin to 16/edge because contains hardcoded storage directives that break with PG 16
   source          = "git::https://github.com/canonical/postgresql-operator.git//terraform?ref=16/edge"
   juju_model_name = var.model
   config          = var.postgresql.config
