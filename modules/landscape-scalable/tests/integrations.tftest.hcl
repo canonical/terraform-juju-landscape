@@ -55,7 +55,7 @@ run "test_local_has_modern_amqp_relations_false" {
 
   assert {
     condition     = local.has_modern_amqp_relations == false
-    error_message = "`has_modern_amqp_relations` should be false when inbound_amqp or outbound_amqp don't exist"
+    error_message = "has_modern_amqp_relations should be false when inbound_amqp or outbound_amqp don't exist"
   }
 
   assert {
@@ -87,7 +87,7 @@ run "test_local_has_modern_postgres_interface_true" {
 
   assert {
     condition     = can(module.landscape_server.requires.database)
-    error_message = "database should be accessible"
+    error_message = "'database' should be accessible"
   }
 }
 
@@ -106,12 +106,12 @@ run "test_local_has_modern_postgres_interface_false" {
 
   assert {
     condition     = local.has_modern_postgres_interface == false
-    error_message = "local.has_modern_postgres_interface should be false when 'database' key doesn't exist in requires"
+    error_message = "has_modern_postgres_interface should be false when 'database' key doesn't exist in requires"
   }
 
   assert {
     condition     = !can(module.landscape_server.requires.database)
-    error_message = "database shouldn't be accessible"
+    error_message = "'database' shouldn't be accessible"
   }
 }
 
