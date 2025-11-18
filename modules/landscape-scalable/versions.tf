@@ -7,7 +7,7 @@ terraform {
       source = "juju/juju"
       # NOTE: 1.0 contains breaking changes that required modules have
       # yet to handle.
-      version = "< 1.0.0"
+      version = "< 2.0.0"
     }
   }
 }
