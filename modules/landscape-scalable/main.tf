@@ -1,7 +1,7 @@
 # © 2025 Canonical Ltd.
 
 module "landscape_server" {
-  source      = "git::https://github.com/canonical/landscape-charm.git//terraform?ref=main"
+  source      = "git::https://github.com/jansdhillon/landscape-charm.git//terraform?ref=update-tf-module"
   model       = var.model
   config      = var.landscape_server.config
   app_name    = var.landscape_server.app_name
