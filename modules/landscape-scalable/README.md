@@ -53,7 +53,7 @@ This module uses the [Landscape Server charm module](https://github.com/canonica
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_haproxy"></a> [haproxy](#module\_haproxy) | git::https://github.com/canonical/haproxy-operator.git//terraform/charm | rev250 |
-| <a name="module_landscape_server"></a> [landscape\_server](#module\_landscape\_server) | git::https://github.com/jansdhillon/landscape-charm.git//terraform | update-tf-module |
+| <a name="module_landscape_server"></a> [landscape\_server](#module\_landscape\_server) | git::https://github.com/canonical/landscape-charm.git//terraform | main |
 | <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/canonical/postgresql-operator.git//terraform | rev935 |
 
 ## Resources
