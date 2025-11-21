@@ -1,4 +1,4 @@
-# AI Agents
+# AGENTS.md
 
 This repository welcomes contributions and interactions from AI agents.
 
@@ -20,7 +20,7 @@ When making code changes, AI agents should:
 
 1. Follow Terraform best practices and conventions
 2. Maintain consistency with existing module patterns
-3. Ensure all changes are properly formatted using `terraform fmt`
+3. Ensure all changes are properly formatted using `make fix`
 4. Validate configurations where possible
 5. Update relevant documentation
 
@@ -65,6 +65,4 @@ Development requires:
 - [Juju Provider Documentation](https://registry.terraform.io/providers/juju/juju/latest)
 - [Contributing Guidelines](CONTRIBUTING.md)
 
-## Contact
 
-For questions or concerns about AI agent interactions, please open an issue in this repository.
