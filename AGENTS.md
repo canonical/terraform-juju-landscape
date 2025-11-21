@@ -1,10 +1,6 @@
 # AGENTS.md
 
-This repository welcomes contributions and interactions from AI agents.
-
-## Overview
-
-This repository contains Terraform product modules for deploying Landscape, including the Landscape Server charm and other required applications, using the Juju provider. AI agents can assist with:
+This repository contains Terraform product modules for deploying Landscape, including the Landscape Server charm and other required applications, using the Terraform provider for Juju. AI agents can assist with:
 
 - Code review and improvements
 - Documentation updates
@@ -24,6 +20,10 @@ When making code changes, AI agents should:
 4. Validate configurations where possible
 5. Update relevant documentation
 
+### Pull Requests
+
+- Titles should follow Conventional Commits.
+
 ### Testing
 
 Before submitting changes:
@@ -31,38 +31,11 @@ Before submitting changes:
 1. Run `make fix` to format and lint code
 2. Run `make test` to execute Terraform tests
 3. Verify changes don't break existing functionality
+4. Add tests in the `/tests` directory of the module being modified
 
 ### Documentation
 
-- Update module README.md files when changing module interfaces
+- Don't module README.md files when changing module interfaces, there's a GitHub Actions workflow (`.github/workflows/terraform-docs.yaml`) that uses terraform-docs to update the generated (API reference) portions of the README
 - Keep examples up-to-date with code changes
 - Follow the existing documentation style
-
-## Repository Structure
-
-```
-.
-├── modules/
-│   └── landscape-scalable/    # Terraform module for scalable Landscape deployment
-├── CONTRIBUTING.md            # Contribution guidelines
-├── README.md                  # Main repository documentation
-└── Makefile                   # Build and test automation
-```
-
-## Prerequisites
-
-Development requires:
-- Juju >=3.6
-- A Juju controller bootstrapped onto a machine cloud
-- A Juju model available for testing
-- Terraform or OpenTofu
-- Make
-- TFLint
-
-## Resources
-
-- [Terraform Documentation](https://www.terraform.io/)
-- [Juju Provider Documentation](https://registry.terraform.io/providers/juju/juju/latest)
-- [Contributing Guidelines](CONTRIBUTING.md)
-
 
