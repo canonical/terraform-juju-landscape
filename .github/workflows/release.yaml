@@ -76,12 +76,11 @@ jobs:
 
       - name: Create release
         if: steps.check_tag.outputs.skip == 'false'
-        uses: softprops/action-gh-release@v2
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.next_version.outputs.new_version }}
+          tag: ${{ steps.next_version.outputs.new_version }}
           name: Release ${{ steps.next_version.outputs.new_version }}
-          generate_release_notes: true
+          generateReleaseNotes: true
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          skipIfReleaseExists: true
