@@ -35,7 +35,7 @@ Before submitting changes:
 
 ### Documentation
 
-- Don't module README.md files when changing module interfaces, there's a GitHub Actions workflow (`.github/workflows/terraform-docs.yaml`) that uses terraform-docs to update the generated (API reference) portions of the README
+- Don't manually update module README.md files when changing module interfaces; there's a GitHub Actions workflow (`.github/workflows/terraform-docs.yaml`) that uses terraform-docs to update the generated (API reference) portions of the README
 - Keep examples up-to-date with code changes
 - Follow the existing documentation style
 
