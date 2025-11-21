@@ -37,10 +37,10 @@ jobs:
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
           
           # Check commit messages since last tag for version bump hints
-          COMMITS=$(git log $LATEST_TAG..HEAD --pretty=format:"%s" 2>/dev/null || git log HEAD --pretty=format:"%s" --max-count=50)
+          COMMITS=$(git log $LATEST_TAG..HEAD --pretty=format:"%B" 2>/dev/null || git log HEAD --pretty=format:"%B" --max-count=50)
           
           # Determine version bump based on conventional commits
-          if echo "$COMMITS" | grep -qiE "^feat(\(.+\))?!:|^fix(\(.+\))?!:|^chore(\(.+\))?!:|^BREAKING CHANGE:"; then
+          if echo "$COMMITS" | grep -qiE "^feat(\(.+\))?!:|^fix(\(.+\))?!:|^chore(\(.+\))?!:" || echo "$COMMITS" | grep -qi "^BREAKING[- ]CHANGE:"; then
             # Major version bump for breaking changes
             MAJOR=$((MAJOR + 1))
             MINOR=0
