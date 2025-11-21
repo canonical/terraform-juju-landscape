@@ -17,70 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get latest tag
-        id: get_latest_tag
-        run: |
-          # Get the latest tag, default to v0.0.0 if no tags exist
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-          echo "Latest tag: $LATEST_TAG"
-
-      - name: Determine next version
-        id: next_version
-        run: |
-          LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
-          
-          # Remove 'v' prefix for version manipulation
-          VERSION=${LATEST_TAG#v}
-          
-          # Split version into major.minor.patch
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-          
-          # Check commit messages since last tag for version bump hints
-          if git rev-parse "$LATEST_TAG" >/dev/null 2>&1; then
-            COMMITS=$(git log $LATEST_TAG..HEAD --pretty=format:"%B")
-          else
-            COMMITS=$(git log HEAD --pretty=format:"%B" --max-count=50)
-          fi
-          
-          # Determine version bump based on conventional commits
-          # Check for breaking changes first (major version bump)
-          if echo "$COMMITS" | grep -qE "^[a-z]+(\(.+\))?!:" || echo "$COMMITS" | grep -q "BREAKING[- ]CHANGE:"; then
-            # Major version bump for breaking changes
-            MAJOR=$((MAJOR + 1))
-            MINOR=0
-            PATCH=0
-          elif echo "$COMMITS" | grep -qE "^feat(\(.+\))?:"; then
-            # Minor version bump for new features
-            MINOR=$((MINOR + 1))
-            PATCH=0
-          else
-            # Patch version bump for everything else (fixes, chores, etc.)
-            PATCH=$((PATCH + 1))
-          fi
-          
-          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "Next version: $NEW_VERSION"
-
-      - name: Check if tag already exists
-        id: check_tag
-        run: |
-          NEW_VERSION="${{ steps.next_version.outputs.new_version }}"
-          if git rev-parse "$NEW_VERSION" >/dev/null 2>&1; then
-            echo "Tag $NEW_VERSION already exists, skipping release"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create release
-        if: steps.check_tag.outputs.skip == 'false'
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.next_version.outputs.new_version }}
-          name: Release ${{ steps.next_version.outputs.new_version }}
-          generateReleaseNotes: true
-          draft: false
-          prerelease: false
-          skipIfReleaseExists: true
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
