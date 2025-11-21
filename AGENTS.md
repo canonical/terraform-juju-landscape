@@ -4,7 +4,7 @@ This repository welcomes contributions and interactions from AI agents.
 
 ## Overview
 
-This repository contains Terraform product modules for deploying Landscape using the Juju provider. AI agents can assist with:
+This repository contains Terraform product modules for deploying Landscape, including the Landscape Server charm and other required applications, using the Juju provider. AI agents can assist with:
 
 - Code review and improvements
 - Documentation updates
@@ -53,6 +53,8 @@ Before submitting changes:
 
 Development requires:
 - Juju >=3.6
+- A Juju controller bootstrapped onto a machine cloud
+- A Juju model available for testing
 - Terraform or OpenTofu
 - Make
 - TFLint
