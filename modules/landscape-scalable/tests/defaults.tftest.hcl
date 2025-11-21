@@ -92,7 +92,7 @@ run "validate_config_defaults" {
 
   assert {
     condition     = lookup(var.landscape_server.config, "landscape_ppa", null) == "ppa:landscape/self-hosted-beta"
-    error_message = "Landscape Server should have autoregistration enabled by default"
+    error_message = "Landscape Server should default to ppa:landscape/self-hosted-beta"
   }
 
   assert {
