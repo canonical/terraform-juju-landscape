@@ -1,6 +1,7 @@
 # © 2025 Canonical Ltd.
 
 module "landscape_server" {
+  # TODO: Pin to real release when we get one with these fixes
   source      = "git::https://github.com/jansdhillon/landscape-charm.git//terraform?ref=update-tf-module"
   model       = var.model
   config      = var.landscape_server.config

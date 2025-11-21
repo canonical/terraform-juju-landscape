@@ -14,8 +14,8 @@ run "validate_channel_defaults" {
   command = plan
 
   assert {
-    condition     = var.landscape_server.channel == "25.10/edge"
-    error_message = "Landscape Server channel should default to '25.10/edge'"
+    condition     = var.landscape_server.channel == "25.10/beta"
+    error_message = "Landscape Server channel should default to '25.10/beta'"
   }
 
   assert {
@@ -87,6 +87,11 @@ run "validate_config_defaults" {
 
   assert {
     condition     = lookup(var.landscape_server.config, "autoregistration", null) == "true"
+    error_message = "Landscape Server should have autoregistration enabled by default"
+  }
+
+  assert {
+    condition     = lookup(var.landscape_server.config, "landscape_ppa", null) == "ppa:landscape/self-hosted-beta"
     error_message = "Landscape Server should have autoregistration enabled by default"
   }
 
