@@ -1,8 +1,5 @@
 # Landscape Scalable Product Module
 
-> [!CAUTION]
-> This module is not currently compatible with Charmed PostgreSQL 16. You cannot use the `16/stable`, `16/candidate`, `16/edge`, or `16/beta` channels of the `postgresql` charm.
-
 This module requires a bootstrapped Juju cloud with a model created within it, the name of which can be provided as `model`.
 
 For example, bootstrap a LXD cloud:
@@ -54,7 +51,7 @@ This module uses the [Landscape Server charm module](https://github.com/canonica
 |------|--------|---------|
 | <a name="module_haproxy"></a> [haproxy](#module\_haproxy) | git::https://github.com/canonical/haproxy-operator.git//terraform/charm | rev250 |
 | <a name="module_landscape_server"></a> [landscape\_server](#module\_landscape\_server) | git::https://github.com/jansdhillon/landscape-charm.git//terraform | update-tf-module |
-| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/canonical/postgresql-operator.git//terraform | rev935 |
+| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/canonical/postgresql-operator.git//terraform | 16/edge |
 
 ## Resources
 
@@ -86,5 +83,6 @@ This module uses the [Landscape Server charm module](https://github.com/canonica
 | <a name="output_applications"></a> [applications](#output\_applications) | The charms included in the module. |
 | <a name="output_haproxy_self_signed"></a> [haproxy\_self\_signed](#output\_haproxy\_self\_signed) | Indicates whether HAProxy is using a self-signed TLS certificate. |
 | <a name="output_has_modern_amqp_relations"></a> [has\_modern\_amqp\_relations](#output\_has\_modern\_amqp\_relations) | Indicates whether the deployment uses the modern inbound/outbound AMQP endpoints. |
+| <a name="output_has_modern_postgres_interface"></a> [has\_modern\_postgres\_interface](#output\_has\_modern\_postgres\_interface) | Indicates whether the deployment uses the modern database interface for PostgreSQL. |
 | <a name="output_registration_key"></a> [registration\_key](#output\_registration\_key) | Registration key from the Landscape Server config. |
 <!-- END_TF_DOCS -->
