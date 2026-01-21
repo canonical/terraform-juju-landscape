@@ -1,7 +1,7 @@
 # Landscape Terraform Product Modules
 
-> [!WARNING]
-> This repository is currently a **work-in-progress** and should not be used in production.
+> [!CAUTION]
+> This repository is **archived** and has been migrated to the [Landscape Server charm repository](https://github.com/canonical/landscape-charm). Further changes and releases will not be synced here.
 
 This project contains [Terraform][Terraform] product modules to deploy Landscape, including the Landscape Server charm and other required applications.
 
